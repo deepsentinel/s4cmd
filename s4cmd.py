@@ -974,7 +974,10 @@ class S3Handler(object):
     dst_s3_url = S3URL.is_valid(target)
 
     source_list = self.relative_dir_walk(source)
-    if len(source_list) == 0 or '.' in source_list:
+    if '.' in source_list:
+      source_list.remove('.')     # to fix strange syncing problem
+
+    if len(source_list) == 0:
       raise Failure('Sync command need to sync directory to directory.')
 
     sync_list = [(os.path.join(source, f), os.path.join(target, f)) for f in source_list]
