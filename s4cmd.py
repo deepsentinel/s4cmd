@@ -387,7 +387,9 @@ class BotoClient(object):
                                       aws_access_key_id=aws_access_key_id,
                                       aws_secret_access_key=aws_secret_access_key)
     else:
-      self.client = self.boto3.client('s3')
+      from botocore import UNSIGNED
+      from botocore.client import Config
+      self.client = self.boto3.client('s3', config=Config(signature_version=UNSIGNED))
 
     # Cache the result so we don't have to recalculate.
     self.legal_params = {}
